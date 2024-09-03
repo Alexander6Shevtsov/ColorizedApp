@@ -8,7 +8,7 @@
 import UIKit
 
 final class SettingsViewController: UIViewController {
-
+    
     // MARK: - IB Outlets
     @IBOutlet var colorView: UIView!
     
@@ -44,7 +44,7 @@ final class SettingsViewController: UIViewController {
         setValue(for: redTextField, greenTextField, blueTextField)
         
     }
-    
+    // убрать клав тапом по экрану
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
@@ -64,9 +64,9 @@ final class SettingsViewController: UIViewController {
             setValue(for: blueTextField)
         }
         
-        setColor()
+        setColor() // задаем цвет для вью
     }
-    
+    // кнопка Done
     @IBAction func doneButtonPressed() {
         delegate.setColor(colorView.backgroundColor ?? .white)
         dismiss(animated: true)
@@ -105,7 +105,7 @@ extension SettingsViewController {
     }
     
     private func setValue(for colorSliders: UISlider...) {
-        let ciColor = CIColor(color: viewColor)
+        let ciColor = CIColor(color: viewColor) // CIColor - разбив цвета на компоненты
         colorSliders.forEach { slider in
             switch slider {
             case redSlider: redSlider.value = Float(ciColor.red)
@@ -123,12 +123,11 @@ extension SettingsViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             textField?.text = "0.50"
-            textField?.becomeFirstResponder()
+            textField?.becomeFirstResponder() // вызывает клав автоматом
         }
         alert.addAction(okAction)
         present(alert, animated: true)
     }
-
 }
 
 // MARK: - UITextFieldDelegate
@@ -166,24 +165,26 @@ extension SettingsViewController: UITextFieldDelegate {
         setColor()
     }
     
+    // тулбар для текстового поля
     func textFieldDidBeginEditing(_ textField: UITextField) {
         guard textField != redTextField else { return }
         let keyboardToolbar = UIToolbar()
-        keyboardToolbar.sizeToFit()
+        keyboardToolbar.sizeToFit() // подстройка клав
         textField.inputAccessoryView = keyboardToolbar
         
+        // кнопка Done в тулбаре
         let doneButton = UIBarButtonItem(
             barButtonSystemItem: .done,
             target: textField,
             action: #selector(resignFirstResponder)
         )
-        
+        // чтобы кнопка Done была с права
         let flexBarButton = UIBarButtonItem(
-            barButtonSystemItem: .flexibleSpace,
+            barButtonSystemItem: .flexibleSpace, // - пустое пространство
             target: nil,
             action: nil
         )
-        
+        // помещаем в массив тулбара пустое пространство потом кнопку
         keyboardToolbar.items = [flexBarButton, doneButton]
     }
 }

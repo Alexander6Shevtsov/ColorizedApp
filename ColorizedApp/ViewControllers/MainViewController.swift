@@ -21,7 +21,7 @@ final class MainViewController: UIViewController {
 
 // MARK: - SettingsViewControllerDelegate
 extension MainViewController: SettingsViewControllerDelegate {
-    func setColor(_ color: UIColor) {
-        view.backgroundColor = color
+    func setColor(_ color: UIColor) { // берем цвет из параметра
+        view.backgroundColor = color // и передаём в цвет фона
     }
 }
